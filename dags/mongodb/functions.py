@@ -4,17 +4,18 @@ from mongodb.schema import flight_summary
 from datetime import datetime
 
 
-mongo_uri="mongodb://1234:1234@mongo:27017"
-
-client = MongoClient(mongo_uri)
-db = client['flight_db']
-collection = db['flight_summaries']
+def get_collection():
+    client = MongoClient("mongodb://mongo:27017/?replicaSet=rs0",
+                        serverSelectionTimeoutMS=5000)
+    db = client['flight_db']
+    return db['flight_summaries']
 
 
 def update_collection(data):
 
     record = flight_summary.get_records(data)
     record['_id'] = record.pop('fr24_id')
+    collection = get_collection()
 
     try:
         collection.insert_one(record)
@@ -33,6 +34,7 @@ def update_collection(data):
 
 def delete_record_by_id(doc_id):
     try:
+        collection = get_collection()
         result = collection.delete_one({'_id': doc_id})
         if result.deleted_count == 1:
             print(f"Deleted: _id: {doc_id}")
@@ -44,6 +46,7 @@ def delete_record_by_id(doc_id):
 
 def create_collection():
 
+    collection = get_collection()
     # Check if collection exists and is empty
     if collection.estimated_document_count() == 0:
 
@@ -103,6 +106,8 @@ def create_collection():
 
 def get_non_ended_flight_records(last_updated: datetime):
 
+    collection = get_collection()
+
     query = {
         "first_seen": {"$lte": last_updated},
         "updated_at": {"$lte": last_updated},
@@ -122,6 +127,8 @@ def get_non_ended_flight_records(last_updated: datetime):
 
 def get_non_started_flight_records(last_updated: datetime):
 
+    collection = get_collection()
+    
     query = {
         "first_seen": {"$lte": last_updated},
         "updated_at": {"$lte": last_updated},
