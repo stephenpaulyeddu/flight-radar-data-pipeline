@@ -72,7 +72,7 @@ def create_collection():
             'hex': '896678',
             'first_seen': '2025-07-12T10:42:16Z',
             'last_seen': '2025-07-12T14:08:47Z',
-            'flight_ended': False
+            'flight_ended': True
         }]
 
         record = flight_summary.get_records(dummy_data[0])

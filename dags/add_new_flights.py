@@ -3,7 +3,7 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta, timezone
 import sys
 import os
-from flight_radar.update_database import check_collection, add_new_flights
+from flight_radar.update_database import check_collection, add_new_flights, update_non_landed_flights, update_non_takeoff_flights
 
 default_args = {
     "owner": "airflow",
@@ -32,4 +32,18 @@ with DAG(
         ),
     )
 
-    create_collection_task >> add_new_flights_task
+    update_non_landed_flights_task = PythonOperator(
+        task_id="update_non_landed_flights",
+        python_callable=lambda **context: update_non_landed_flights(
+            context["data_interval_end"]
+        ),
+    )
+
+    update_non_takeoff_flights_task = PythonOperator(
+        task_id="update_non_takeoff_flights",
+        python_callable=lambda **context: update_non_takeoff_flights(
+            context["data_interval_end"]
+        ),
+    )
+
+    create_collection_task >> [ add_new_flights_task, update_non_landed_flights_task, update_non_takeoff_flights_task ]

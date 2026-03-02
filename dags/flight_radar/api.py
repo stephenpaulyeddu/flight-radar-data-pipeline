@@ -31,9 +31,6 @@ def get_flight_summary_from_flight_first_seen(auth,flight_datetime_from,flight_d
         print(f"An error occurred: {err}")
 
 
-flight_ids = '3b380c80,3b380c9c,3b380cc4'
-
-
 def get_flight_summary_from_flight_id(auth,flight_ids,airports,categories):
     
     url = "https://fr24api.flightradar24.com/api/flight-summary/full"

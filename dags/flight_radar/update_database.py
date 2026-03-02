@@ -4,7 +4,7 @@ from mongodb.functions import update_collection, create_collection
 from flight_radar.api import get_non_ended_flight_ids, get_flight_summary_from_flight_first_seen, get_flight_summary_from_flight_id,get_non_started_flight_ids
 from api_helper.functions import get_time_range_as_per_sync_frequency
 
-auth = '<write auth token here>'
+auth = '<add api key here>'
 
 airports= 'BLR'
 categories= 'P'
@@ -17,7 +17,7 @@ def check_collection():
 
 def add_new_flights(data_interval_end):
 
-    start_datetime_str,end_datetime_str = get_time_range_as_per_sync_frequency(5,30,base_time=data_interval_end)
+    start_datetime_str,end_datetime_str = get_time_range_as_per_sync_frequency(sync_frequency=5, buffer=30, base_time=data_interval_end)
 
     ## SCRIPT TO ADD NEW FLIGHTS
     flight_datetime_from= start_datetime_str
@@ -43,7 +43,7 @@ def add_new_flights(data_interval_end):
 
 
 
-def check_non_landed_flights(data_interval_end):
+def update_non_landed_flights(data_interval_end):
     ### SCRIPT TO UPDATE LIVE FLIGHTS ( Landed / Not Landed ) - we check every 3 hrs
 
     base_time = data_interval_end
@@ -70,7 +70,7 @@ def check_non_landed_flights(data_interval_end):
         print("No Flights fall in the date threshold!!")
 
 
-def check_non_takeoff_flights(data_interval_end):
+def update_non_takeoff_flights(data_interval_end):
     ### SCRIPT TO UPDATE FLIGHTS ( Non - Take Off Flights ) - we check every 30 minutes
 
     # Step 1: Get UTC time minus 30 minutes
