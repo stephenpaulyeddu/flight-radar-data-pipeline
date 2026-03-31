@@ -3,8 +3,9 @@ from datetime import datetime, timezone, timedelta
 from mongodb.functions import update_collection, create_collection
 from flight_radar.api import get_non_ended_flight_ids, get_flight_summary_from_flight_first_seen, get_flight_summary_from_flight_id,get_non_started_flight_ids
 from api_helper.functions import get_time_range_as_per_sync_frequency
+import os
 
-auth = '<add api key here>'
+auth = os.getenv("FR_API_KEY")
 
 airports= 'BLR'
 categories= 'P'
