@@ -118,8 +118,6 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://airflow:airflow@mysql/airflow
     entrypoint: >
       bash -c "
-      apt-get update &&
-      apt-get install -y build-essential default-libmysqlclient-dev &&
       pip install mysqlclient &&
       airflow db migrate &&
       airflow users create --username admin --password admin --firstname admin --lastname user --role Admin --email admin@example.com || true
@@ -145,8 +143,6 @@ services:
       - ./requirements.txt:/requirements.txt
     command: >
       bash -c "
-      apt-get update &&
-      apt-get install -y build-essential default-libmysqlclient-dev &&
       pip install --no-cache-dir -r /requirements.txt &&
       airflow webserver
       "
