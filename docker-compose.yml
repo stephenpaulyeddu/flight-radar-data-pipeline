@@ -165,8 +165,6 @@ services:
       - ./requirements.txt:/requirements.txt
     command: >
       bash -c "
-      apt-get update &&
-      apt-get install -y build-essential default-libmysqlclient-dev &&
       pip install --no-cache-dir -r /requirements.txt &&
       airflow scheduler
       "
