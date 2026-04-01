@@ -51,6 +51,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
@@ -173,3 +176,4 @@ volumes:
   mysql_data:
   mongo_data:
   kafka_data:
+  zookeeper_data:
