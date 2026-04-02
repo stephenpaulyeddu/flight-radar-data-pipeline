@@ -27,5 +27,9 @@ jobs:
 
             echo "Restarting services..."
             docker-compose up -d --build
+            echo "Services restarted!"
+
+            echo "Running init script..."
+            bash scripts/init.sh
 
             echo "Deployment complete"
